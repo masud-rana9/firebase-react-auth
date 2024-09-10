@@ -1,10 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import handleGithubLogin from "../githubauth/GithubAuth";
 import { AuthContext } from "../provider/AuthProvider";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import { FaEyeSlash } from "react-icons/fa";
+import { IoEyeSharp } from "react-icons/io5";
 
 const Login = () => {
   const { signIn, handleGoogleLogin } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [show, setShow] = useState(false);
+  console.log(location);
+
+  const from = location.state?.from?.pathname || "/";
+
   const handleLogin = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -16,6 +25,7 @@ const Login = () => {
         const loggedUser = result.user;
         console.log(loggedUser);
         form.reset();
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.log(error.message);
@@ -29,13 +39,16 @@ const Login = () => {
       </h1>
       <form onSubmit={handleLogin} className="flex flex-col w-full ">
         <input
-          type="text"
+          type="email"
           name="email"
           placeholder="Email"
           className="p-5 outline-none m-10 rounded-md"
         />
+        <p className="text-white text-2xl px-10" onClick={() => setShow(!show)}>
+          {show ? <FaEyeSlash /> : <IoEyeSharp />}
+        </p>
         <input
-          type="password"
+          type={show ? "text" : "password"}
           name="password"
           placeholder="Password"
           className="p-5 outline-none m-10 rounded-md"
