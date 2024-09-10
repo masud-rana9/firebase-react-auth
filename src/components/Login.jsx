@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import handleGoogleLogin from "../googleauth/GoogleAuth";
 import handleGithubLogin from "../githubauth/GithubAuth";
 import { AuthContext } from "../provider/AuthProvider";
 import { useContext } from "react";
 
 const Login = () => {
-  const { signIn } = useContext(AuthContext);
+  const { signIn, handleGoogleLogin } = useContext(AuthContext);
   const handleLogin = (event) => {
     event.preventDefault();
     const form = event.target;
